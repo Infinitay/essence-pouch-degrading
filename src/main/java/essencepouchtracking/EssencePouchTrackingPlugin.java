@@ -155,7 +155,6 @@ public class EssencePouchTrackingPlugin extends Plugin
 	private boolean isCapeDecayPreventionActive;
 	private boolean hasRedwoodAbyssalLanternEquipped;
 	private boolean hasRedwoodAbyssalLanternInInventory;
-	private boolean isLanternDecayPreventionAvailable;
 
 	private boolean didSendCheckNotification;
 	private int delayTicksUntilLevelsInitialized = 2;
@@ -820,7 +819,6 @@ public class EssencePouchTrackingPlugin extends Plugin
 				break;
 			case InterfaceID.GOTR:
 				log.debug("GOTR interface loaded");
-				this.isLanternDecayPreventionAvailable = true;
 				break;
 			default:
 				break;
@@ -846,7 +844,6 @@ public class EssencePouchTrackingPlugin extends Plugin
 			this.pouches.values().forEach(EssencePouch::resetStored);
 			this.saveTrackingState();
 			log.debug("Player has left the GOTR portal");
-			this.isLanternDecayPreventionAvailable = false;
 		}
 		else if (varbitChanged.getVarbitId() == 14672)
 		{
@@ -1575,22 +1572,12 @@ public class EssencePouchTrackingPlugin extends Plugin
 		return this.hasRedwoodAbyssalLanternEquipped || this.hasRedwoodAbyssalLanternInInventory;
 	}
 
-	private boolean shouldPreventFurtherDecay()
+	public boolean shouldPreventFurtherDecay()
 	{
 		// Prevent decay if the player has a speciality cape equipped
 		// Prevent decay if the player has an abyssal lantern equipped or their inventory while lantern prevention is available
-		if (this.isCapeDecayPreventionActive)
-		{
-			return true;
-		}
-		else if (this.isLanternDecayPreventionAvailable)
-		{
-			return this.hasRedwoodAbyssalLantern();
-		}
-		else
-		{
-			return false;
-		}
+		// 	- As of the Summer Sweep-up 2026, players can use the effects of Abyssal lanterns anywhere
+		return this.isCapeDecayPreventionActive || this.hasRedwoodAbyssalLantern();
 	}
 
 	// User added a colossal essence pouch into their inventory -> upgraded from regular -> reset all regular pouches

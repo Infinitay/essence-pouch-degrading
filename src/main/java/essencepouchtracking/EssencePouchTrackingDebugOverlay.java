@@ -49,6 +49,7 @@ public class EssencePouchTrackingDebugOverlay extends OverlayPanel
 		buildLine("Current Tick", String.valueOf(this.client.getTickCount()));
 		buildLine("Updates Paused?", String.valueOf(isPaused) + " (" + this.plugin.getPauseUntilTick() + ")");
 		buildLine("Crafted?", String.valueOf(wasLastActionCraft));
+		buildLine("Prevent Decay?", String.valueOf(this.plugin.shouldPreventFurtherDecay()));
 		buildLine("", "");
 		buildLine("Prev Free Slot", String.valueOf(previousInventoryFreeSlots));
 		buildLine("Free Slot", String.valueOf(inventoryFreeSlots));
